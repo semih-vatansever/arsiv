@@ -1,0 +1,1755 @@
+# DHMİ AKILLI DOKÜMAN ARŞİVİ
+## Kapsamlı Proje Gereksinimleri
+
+# 0. PROJENİN TANIMI VE TEMEL İLKELER
+
+Bu proje, DHMİ ile gerçekleştirilen resmî yazışmaların ve bunlarla ilişkili belgelerin güvenli biçimde arşivlenmesi, aranması, ilişkilendirilmesi ve yapay zekâyla analiz edilmesi amacıyla geliştirilen bir web uygulamasıdır.
+
+Uygulamanın adı:
+
+**DHMİ Akıllı Doküman Arşivi**
+
+Bu belge, uygulamanın ürün gereksinimlerini ve temel teknik beklentilerini tanımlar.
+
+Geliştirme süreci Ubuntu üzerinde, Cezar.run aracılığıyla koordine edilen Codex ve Antigravity gibi AI coding agent'larıyla gerçekleştirilecektir. Google AI Studio gerektiğinde yardımcı geliştirme ve tasarım aracı olarak kullanılabilir.
+
+Bütün ajanlar aynı Git deposunu ve ortak proje gereksinimlerini esas almalıdır.
+
+Geliştirme görevlerinin dağıtımı, sıralaması ve onay süreçleri bu belgenin dışında yönetilecektir.
+
+## Temel kurallar
+
+1. Kullanıcı arayüzü Türkçe olacak.
+2. Uygulama tamamen web tabanlı olacak.
+3. Bilgisayar, tablet ve telefon tarayıcılarından kullanılabilecek.
+4. Yaklaşık 4–5 kişilik kapalı bir ekip tarafından kullanılacak.
+5. Kullanıcıların tamamı aynı ortak belge arşivine erişecek.
+6. Her kullanıcının ayrı bir giriş kimliği olacak ancak ayrı kişisel arşivleri olmayacak.
+7. Gerçek, kalıcı bir veritabanı kullanılacak.
+8. Orijinal belgeler kalıcı ve güvenli biçimde saklanacak.
+9. Yapay zekâ işlemleri için Abacus.AI RouteLLM API kullanılacak.
+10. API anahtarları ve diğer gizli bilgiler yalnızca sunucu tarafında saklanacak.
+11. Belgeler kesinlikle herkese açık olmayacak.
+12. Orijinal belgelerin korunması ve veri kaybının engellenmesi öncelikli olacak.
+13. Güvenlik, veri doğruluğu ve işlevsellik görsel tasarımdan daha yüksek önceliğe sahip olacak.
+14. Geliştirme ortamına veya belirli bir AI coding agent'a gereksiz bağımlılık oluşturulmayacak.
+15. Uygulama kaynak kodu taşınabilir, sürdürülebilir ve farklı ortamlarda çalıştırılabilir olacak.
+
+Yalnızca çalışan gibi görünen bir demo veya statik prototip değil, gerçek kullanıcıları ve gerçek verileri destekleyen bir uygulama geliştirilecektir.
+
+---
+
+# 1. UYGULAMANIN AMACI
+
+Bu uygulama, Devlet Hava Meydanları İşletmesi (DHMİ) ile geçmişten bugüne gerçekleştirilen resmî yazışmaların ve bu yazışmalarla ilişkili belgelerin dijital arşividir.
+
+Arşivin temel amacı, çok sayıda belge arasından belirli bir belgeyi veya belirli bir konuyla ilgili yazışmaları hızlı, doğru ve kolay biçimde bulmaktır.
+
+Daha kapsamlı araştırmalar için aynı arşivi kullanabilen bir AI Research sistemi de bulunacaktır.
+
+Sistemin merkezi e-postalar değil, **e-postalara eklenmiş belgelerdir.**
+
+Bir e-postada birden fazla belge olabilir. Her belge ayrı bir arşiv kaydı olarak değerlendirilmeli ve ayrı bir belge kartına sahip olmalıdır.
+
+Aynı belge birden fazla e-postada yer alıyorsa bu kaynakların tamamı belgeyle ilişkilendirilmeli, ancak gereksiz kopya belge kartları oluşturulmamalıdır.
+
+E-postalar; belgenin kaynağını, göndericisini, tarihini, konusunu ve yazışma bağlamını anlamamıza yardımcı olur.
+
+Her belge ayrıca doğrudan yüklenebilmelidir. Dolayısıyla e-posta kaynağı olmayan belgeler de desteklenmelidir.
+
+Belgeler arasında özellikle şu konular bulunabilir:
+
+- Havalimanları
+- Havacılık analizleri
+- Mania planları
+- Engel sınırlama yüzeyleri
+- Apronlar
+- Pistler
+- Taksi yolları
+- Hava seyrüseferi
+- Teknik değerlendirmeler
+- İmar planları
+- Proje görüşleri
+- İnşaat ve mühendislik çalışmaları
+- Havalimanı genişletmeleri
+- Resmî kurum yazışmaları
+
+Sistem bu terimlerle sınırlı kalmamalıdır. Arşivin kapsamı zamanla genişleyebilir.
+
+---
+
+# 2. KULLANICILAR VE KİMLİK DOĞRULAMA
+
+## 2.1. Ortak çalışma modeli
+
+Uygulama 4–5 kişilik bir ekip tarafından kullanılacak.
+
+Her kullanıcının farklı bir kişisel çalışma alanına ihtiyacı yok.
+
+Bütün kullanıcılar aynı arşivi, aynı belgeleri, aynı arama sistemini ve aynı AI Research özelliklerini kullanacak.
+
+Ancak her kullanıcının kendisine ait giriş kimliği bulunacak.
+
+Bu, güvenlik, erişim iptali ve işlem kayıtları açısından önemlidir.
+
+## 2.2. Giriş yöntemi
+
+**İstenen giriş yöntemi: kullanıcı adı + Authenticator uygulamasının ürettiği TOTP kodu.**
+
+E-posta adresi ve parola zorunlu olmayacak.
+
+Örnek:
+
+Kullanıcı adı: semih
+
+Authenticator kodu: 123456
+
+Bu bilgiler doğrulandıktan sonra kullanıcı uygulamaya giriş yapabilecek.
+
+TOTP standardını destekleyen Google Authenticator, Microsoft Authenticator ve benzeri uygulamalarla uyumlu olmalı.
+
+Her kullanıcı için farklı, kriptografik olarak güvenli bir TOTP anahtarı oluşturulmalı.
+
+### İlk eşleştirme
+
+1. Yönetici kullanıcıyı oluşturur.
+2. Kullanıcıya özel, tek kullanımlık ve kısa ömürlü hesap etkinleştirme bağlantısı veya kodu hazırlanır.
+3. Kullanıcı kendi cihazında hesap etkinleştirme ekranını açar.
+4. Kendisine özel QR kodunu Authenticator uygulamasıyla tarar.
+5. Doğrulama kodunu girerek kurulumunu tamamlar.
+6. Bundan sonra kullanıcı adı ve Authenticator koduyla giriş yapabilir.
+
+Kullanıcıların aynı TOTP anahtarını paylaşmasına izin verilmemeli.
+
+QR kodundaki gizli anahtar her girişte yeniden gösterilmemeli.
+
+TOTP gizli anahtarları veritabanında güvenli biçimde şifrelenmiş tutulmalı.
+
+TOTP kodlarının yeniden kullanılması engellenmeli. Zaman toleransı, saat senkronizasyonu, hız sınırları ve başarısız giriş korumaları uygulanmalı.
+
+Güvenli oturum çerezleri, HTTPS, sunucu tarafında oturum kontrolü ve CSRF koruması kullanılmalı.
+
+Yeni kullanıcıların kendi kendilerine kayıt olmasına izin verilmemeli.
+
+Kullanıcı adı + TOTP yönteminin tek faktörlü olduğu bilinmektedir. Seçilen giriş yöntemi korunurken buna uygun güvenlik önlemleri alınmalı ve ileride daha güçlü kimlik doğrulama yöntemlerine geçiş mümkün olmalıdır.
+
+## 2.3. İlk yönetici hesabı
+
+Sistemin başlangıç kurulumunda ilk yönetici hesabını oluşturmak için güvenli, tek seferlik bir kurulum mekanizması bulunmalı.
+
+Bu kurulum yalnızca ilk yetkilendirilmiş kurulum sırasında çalışabilmeli.
+
+İlk yönetici oluşturulduktan sonra başlangıç kurulumu kalıcı olarak kapanmalı.
+
+Sabit kullanıcı adı, sabit şifre veya herkesin bildiği kurulum anahtarı bırakılmamalı.
+
+İlk yöneticinin görünen adı **Semih Vatansever**, kullanıcı adı **semih** olacak.
+
+Bu bilgiler kullanıcı tarafından güvenli ilk kurulum sırasında tanımlanacak; önceden etkinleştirilmiş veya korumasız bir hesap oluşturulmayacak.
+
+## 2.4. Yetki sistemi
+
+İki farklı rol bulunacak.
+
+### ADMIN
+
+Toplam iki kişi yönetici olacak.
+
+Yönetici yetkileri:
+
+- Yeni kullanıcı oluşturma
+- Kullanıcı erişimini iptal etme
+- Kullanıcıları geçici olarak devre dışı bırakma
+- Kullanıcı rollerini yönetme
+- Authenticator eşleştirmesini sıfırlama
+- Kritik sistem ayarlarını değiştirme
+- Geri yükleme ve yedekleme işlemlerini yönetme
+- Entegrasyon durumlarını yönetme
+- Kalıcı belge silme
+- Güvenlik ve işlem kayıtlarını inceleme
+
+İkinci yönetici, ilk yönetici tarafından atanabilecek.
+
+### MEMBER
+
+Normal ekip üyeleri bütün günlük arşiv işlevlerini kullanabilmeli:
+
+- Belgeleri görüntüleme
+- Arama yapma
+- Belgeleri indirme
+- Dosya yükleme
+- Belge metadata bilgilerini düzenleme
+- Belge açıklamalarını düzeltme
+- Anahtar kelimeleri düzenleme
+- İlişkili belgeleri inceleme
+- Manuel belge ilişkisi oluşturma veya düzeltme
+- AI Research kullanma
+- Belge işleme hatalarını görüntüleme
+- Yeniden işleme talep etme
+
+Normal silme işlemleri geri alınabilir olmalı.
+
+Kalıcı ve geri alınamaz silme işlemleri yalnızca yöneticiler tarafından yapılmalı.
+
+Yetki kontrolleri yalnızca arayüzde değil, bütün backend işlemlerinde uygulanmalı.
+
+## 2.5. Hesap kurtarma
+
+E-posta üzerinden hesap kurtarma gerekmiyor.
+
+Bunun yerine:
+
+- Her kullanıcıya ilk kurulumda güvenli kurtarma kodları sağlanmalı.
+- Kodlar yalnızca bir kez gösterilmeli.
+- Kodların yalnızca hash değerleri saklanmalı.
+- Yöneticiler gerektiğinde kullanıcının Authenticator eşleştirmesini iptal ederek yeniden kurulum başlatabilmeli.
+- Yöneticiler kullanıcıların mevcut TOTP gizli anahtarlarını görememeli.
+- Hesap sıfırlama işlemleri kayıt altına alınmalı.
+- Her iki yöneticinin erişimini kaybetmesi durumuna karşı güvenli bir acil kurtarma prosedürü bulunmalı.
+
+---
+
+# 3. ANA SAYFA VE KULLANICI ARAYÜZÜ
+
+## 3.1. Genel tasarım
+
+Profesyonel, sade, modern ve bilgi yoğunluğunu iyi yöneten bir tasarım kullanılmalı.
+
+Uygulama resmî ve teknik belgelerle çalışmak için kullanılacak.
+
+Gösterişli animasyonlar veya gereksiz dekoratif unsurlar istenmiyor.
+
+Öncelikler:
+
+1. Hızlı arama
+2. Belgeyi kolay tanıma
+3. Belgeler arasında rahat gezinme
+4. Karmaşık bilgilerin okunabilir sunulması
+5. Hızlı ve tutarlı kullanıcı deneyimi
+
+Responsive tasarım kullanılmalı.
+
+Masaüstü, tablet ve mobil ekranlarda işlevler kaybolmamalı.
+
+## 3.2. Ana yerleşim
+
+Ana sayfada üst bölümde geniş ve dikkat çekici bir arama çubuğu bulunmalı.
+
+Arama çubuğunun hemen altında önerilen anahtar kelimeler yer almalı.
+
+Alt bölümde belge kartlarından oluşan bir grid gösterilmeli.
+
+Masaüstünde varsayılan olarak üç sütun kullanılmalı.
+
+Ekran genişliğine göre sütun sayısı otomatik ayarlanmalı.
+
+Mobilde tek sütun tercih edilebilir.
+
+Üst menüde en azından şu bölümler bulunmalı:
+
+- Arşiv
+- AI Research
+- Belge Yükle
+- İşlem Geçmişi
+- Yönetim (yalnızca yöneticiler)
+
+Gerektiğinde filtreler ve arama ayarları için ayrı bir bölüm açılabilmeli.
+
+## 3.3. Arama çubuğu
+
+Arama çubuğu ana sayfanın en önemli bileşenlerinden biridir.
+
+Kullanıcı yazmaya başladığında sonuçlar dinamik olarak güncellenmeli.
+
+Gereksiz ağ isteklerini azaltmak için kısa bir debounce uygulanabilir.
+
+Arama sonuçları her yeni kriterle daraltılabilmeli.
+
+Örneğin:
+
+`mania Esenboğa 2024`
+
+sorgusunda ilgili belgeler öne çıkmalı.
+
+Anahtar kelime bazlı arama ile filtreler birlikte çalışmalı.
+
+Tam metin eşleşmeleri hızlı biçimde gösterilmeli.
+
+Semantik arama, kullanıcı deneyimini yavaşlatmayacak biçimde uygulanmalı.
+
+## 3.4. Önerilen anahtar kelimeler
+
+Arama çubuğunun altında tıklanabilir etiketler bulunmalı.
+
+Başlangıç örnekleri:
+
+MANİA  
+HAVACILIK ANALİZİ  
+APRON  
+PİST  
+İMAR PLANI  
+SEYRÜSEFER  
+TEKNİK GÖRÜŞ  
+ENGEL SINIRLAMA YÜZEYLERİ
+
+Bir etikete tıklanınca arama kriterlerine eklenmeli.
+
+Zamanla arşivde sık karşılaşılan konulardan otomatik öneriler üretilebilmeli.
+
+Kullanıcı seçtiği filtre veya anahtar kelimeyi kaldırabilmeli.
+
+## 3.5. Arama filtreleri
+
+Şu filtreler desteklenmeli:
+
+- Belge adı veya başlığı
+- Belge numarası
+- Belge tarihi
+- E-posta tarihi
+- Gönderen kişi
+- Gönderen kurum
+- Alıcı
+- İlgili birim
+- E-posta konusu
+- Havalimanı
+- Şehir veya lokasyon
+- Proje
+- Belge türü
+- Dosya uzantısı
+- Anahtar kelimeler
+- Belge içerik metni
+- İLGİ referansları
+- Kaynak türü: e-posta / doğrudan yükleme
+
+Tarih aralıkları desteklenmeli.
+
+Türkçe karakterlerin farklı yazımları tolere edilmeli.
+
+Belgelerin resmî numaralarında geçen tire, eğik çizgi, boşluk ve benzeri karakterler kontrollü biçimde normalize edilerek aranabilmeli.
+
+Belge numarasıyla tam eşleşme yapıldığında bu sonuç çok yüksek önceliğe sahip olmalı.
+
+## 3.6. Sıralama
+
+Varsayılan sıralama **alakalılık** olacak.
+
+Diğer seçenekler:
+
+- Belge tarihine göre en yeni
+- Belge tarihine göre en eski
+- E-posta tarihine göre en yeni
+- E-posta tarihine göre en eski
+- Belge numarasına göre
+- Dosya adına göre
+- Dosya türüne göre
+
+Arşivdeki toplam belge sayısı ve mevcut arama sonucunun sayısı gösterilmeli.
+
+---
+
+# 4. BELGE KARTLARI
+
+Ana sayfadaki her kart **tek bir belgeyi** temsil edecek.
+
+Kartlar mümkün olduğunca bilgi verici olacak ancak gereksiz metinle doldurulmayacak.
+
+Kartı açmadan belgenin hangi konuya ait olduğu anlaşılabilmeli.
+
+### Örnek kart
+
+PDF · 4 SAYFA
+
+12.03.2025
+
+**Ankara Esenboğa Havalimanı Mania Planı Hakkında Teknik Değerlendirme**
+
+BELGE NO: 2025/12345
+
+Gönderen: DHMİ Genel Müdürlüğü
+
+İlgili Birim: İnşaat ve Emlak Dairesi
+
+Esenboğa Havalimanı mania planına ilişkin teknik değerlendirme ve engel sınırlama yüzeylerine ait koordinat bilgilerinin incelenmesi.
+
+[MANİA] [ESB] [TEKNİK DEĞERLENDİRME]
+
+Kaynak e-posta: 12.03.2025
+
+Dosya boyutu: 2,4 MB
+
+---
+
+Bu bilgiler gerçek belge içeriğinden çıkarılmalı.
+
+Örnek belge başlığı veya açıklaması bütün belgelere uygulanmamalı.
+
+Otomatik açıklamalar:
+
+- Spesifik olmalı.
+- İlgili havalimanını belirtmeli.
+- Mümkünse projeyi belirtmeli.
+- Belgenin amacını açıklamalı.
+- Ayırt edici teknik konuları içermeli.
+- Gereksiz genel ifadelerden kaçınmalı.
+
+Kötü açıklama:
+
+"Bu belge havalimanıyla ilgili teknik konuları ele almaktadır."
+
+İyi açıklama:
+
+"Antalya Havalimanı apron genişletme projesine ilişkin DHMİ teknik görüşü; mevcut taksi yolu bağlantıları ve operasyonel emniyet koşullarını değerlendiriyor."
+
+Belgede bulunmayan konular, tarihler, projeler veya kurumlar uydurulmamalı.
+
+Çıkarılamayan bilgiler boş veya "Belirlenemedi" olarak gösterilebilir.
+
+Kartlarda mümkünse belge işleme durumu da gösterilmeli.
+
+---
+
+# 5. BELGE DETAY PANELİ
+
+Kullanıcı belge kartına tıkladığında sağ tarafta detay paneli açılmalı.
+
+Panel başlangıçta ekranın tamamını kaplamamalı.
+
+Arka plandaki belge listesi mümkün olduğunca görünür kalmalı.
+
+Panelin sağ üstünde tam ekran düğmesi bulunmalı.
+
+Tam ekran modundan önceki panel boyutuna dönülebilmeli.
+
+Panel kolayca kapatılabilmeli.
+
+Mobil cihazlarda uygun bir tam ekran veya alt panel düzeni kullanılabilir.
+
+## 5.1. Gösterilecek bilgiler
+
+- Belge başlığı
+- Kısa açıklama
+- Orijinal dosya adı
+- Dosya türü
+- Dosya boyutu
+- Sayfa sayısı, belirlenebiliyorsa
+- Belge numarası
+- Belge tarihi
+- Gönderen kişi veya kurum
+- Alıcı
+- İlgili birim
+- Havalimanı
+- Proje
+- Anahtar kelimeler
+- Kaynak e-posta bilgileri
+- E-posta konusu
+- Kaynak e-posta tarihi
+- İLGİ referansları
+- Bu belgeye atıfta bulunan diğer belgeler
+- İlgili diğer belgeler
+- Kaynak bilgilerinin güvenilirlik durumu
+- Son düzenleme tarihi
+
+## 5.2. İndirme
+
+Orijinal dosyayı indirmek için belirgin bir düğme bulunmalı.
+
+Orijinal dosyanın içeriği, uzantısı veya biçimi değiştirilmemeli.
+
+PDF, Word ve Excel dosyaları kendi orijinal formatlarında indirilebilmeli.
+
+Dosya indirme işlemleri yetkilendirilmiş backend üzerinden gerçekleştirilmeli.
+
+## 5.3. Önizleme
+
+PDF veya Word dosyalarının uygulama içinde önizlenmesi öncelikli bir özellik değildir.
+
+Öncelik, belgenin ne olduğunu ve hangi konuyla ilgili olduğunu doğru açıklamaktır.
+
+Basit ve güvenli bir önizleme kolayca gerçekleştirilebiliyorsa eklenebilir.
+
+Ancak önizleme temel arama, analiz veya depolama işlevlerini geciktirmemeli.
+
+## 5.4. Metadata düzenleme
+
+Kullanıcılar otomatik oluşturulan başlık, açıklama, anahtar kelimeler ve diğer düzenlenebilir metadata alanlarını değiştirebilmeli.
+
+Bu düzenlemeler arama indeksine yansımalı.
+
+Orijinal belgeler değişmemeli.
+
+AI tarafından üretilen bilgilerle kullanıcı tarafından düzeltilmiş bilgiler birbirinden ayrılmalı.
+
+Yeniden analiz yapıldığında kullanıcı düzeltmeleri otomatik olarak silinmemeli veya üzerine yazılmamalı.
+
+---
+
+# 6. İLGİ BÖLÜMÜ VE BELGELER ARASI İLİŞKİLER
+
+**BU, UYGULAMANIN EN ÖNEMLİ ÖZELLİKLERİNDEN BİRİDİR.**
+
+DHMİ'nin resmî yazışmalarında sıklıkla "İLGİ" adlı bir bölüm bulunur.
+
+Bu bölümde, mevcut yazışmanın ilişkili olduğu önceki belgeler ve yazışmalar, belge numaraları ve bazen tarihleriyle birlikte belirtilir.
+
+Örnek:
+
+İLGİ:
+
+a) 15.03.2023 tarihli ve E-123456 sayılı yazımız.
+
+b) 24.08.2024 tarihli ve E-789012 sayılı DHMİ yazısı.
+
+Bu ifadeler belgeler arasında gerçek referans ilişkileri oluşturur.
+
+## 6.1. Otomatik İLGİ tespiti
+
+Sistem belge metninde İLGİ bölümünün bulunup bulunmadığını tespit etmeli.
+
+Bulunduğunda ilgili satırları ayrıştırmalı.
+
+Her referans için mümkünse:
+
+- Kaynak belge
+- Referans verilen belge numarası
+- Referans tarihi
+- Referansın metindeki orijinal ifadesi
+- Referansın bulunduğu sayfa veya bölüm
+- Eşleşme durumu
+- Eşleşen hedef belge
+
+saklanmalı.
+
+Türkçe resmî yazışmalardaki farklı İLGİ yazım biçimleri desteklenmeli.
+
+## 6.2. Eşleştirme
+
+Önce arşivdeki belge numaraları üzerinden kesin eşleşme aranmalı.
+
+Belge numaralarının normalize edilmiş biçimleri kullanılabilmeli.
+
+Tarih, kurum ve diğer metadata alanları eşleşmenin doğrulanmasına yardımcı olmalı.
+
+Birden fazla olası eşleşme varsa sistem rastgele karar vermemeli.
+
+Belirsiz eşleşmeler inceleme için işaretlenmeli.
+
+## 6.3. Eksik belgeler
+
+İLGİ bölümünde belirtilen belge henüz arşivde bulunmayabilir.
+
+Bu durumda referans kaybolmamalı.
+
+Belge detayında örneğin:
+
+"E-123456 — 15.03.2023 — Arşivde bulunamadı"
+
+şeklinde gösterilmeli.
+
+İlgili belge ileride arşive eklendiğinde sistem eşleştirmeyi otomatik tekrar denemeli.
+
+## 6.4. Çift yönlü ilişkiler
+
+Bir A belgesi B belgesini İLGİ olarak gösteriyorsa:
+
+- A belgesinden B belgesine gidilebilmeli.
+- B belgesinde "Bu belgeye atıfta bulunan belgeler" başlığı altında A gösterilmeli.
+
+Bu ilişki geriye ve ileriye dönük çalışmalı.
+
+Örneğin 2023 tarihli bir belgede 2025 yılında hangi yazışmalarda atıfta bulunulduğu görülebilmeli.
+
+## 6.5. İlişki türleri
+
+En az iki ilişki türü olacak:
+
+**A. Doğrudan İLGİ referansı**
+
+Belgenin içerisinde açıkça belirtilmiş resmî referans.
+
+**B. Semantik olarak ilişkili belge**
+
+Yapay zekâ veya arama motorunun içerik benzerliği üzerinden önerdiği ilişki.
+
+Bu iki ilişki türü kesinlikle karıştırılmamalı.
+
+AI tarafından tahmin edilmiş ilişki, gerçek resmî İLGİ referansı olarak gösterilmemeli.
+
+## 6.6. Manuel düzeltme
+
+Kullanıcılar yanlış eşleşmiş ilişkileri düzeltebilmeli.
+
+Gerekirse manuel ilişki ekleyebilmeli.
+
+Otomatik eşleşme ile manuel onay bilgisi kaydedilmeli.
+
+İlişkili belge bağlantısına tıklandığında ilgili belgenin detay paneli açılmalı.
+
+Önceki belgeye geri dönmek kolay olmalı.
+
+---
+
+# 7. BELGELERİN UYGULAMAYA EKLENMESİ
+
+İki temel yöntem olacak:
+
+1. E-postaları arşiv adresine yönlendirme
+2. Dosyaları doğrudan yükleme
+
+Her iki yöntem aynı belge işleme sistemini kullanmalı.
+
+## 7.1. Outlook üzerinden e-posta yönlendirme
+
+Mevcut yazışmalar Outlook'ta bulunuyor.
+
+Kurumsal Outlook hesabında otomatik yönlendirme kuralları oluşturulamıyor.
+
+Bu nedenle arşivlenecek e-postalar manuel olarak özel bir arşiv adresine yönlendirilecek.
+
+Örnek:
+
+Outlook → Forward → Özel arşiv adresi
+
+Sistem gelen e-postayı otomatik almalı ve işlemeli.
+
+## 7.2. E-posta alma altyapısı
+
+Tercih edilen servis: **Resend Inbound Email**.
+
+Uygun olduğunda Resend'in sağladığı e-posta alan adı kullanılabilir.
+
+Böylece başlangıçta özel bir alan adı satın almak zorunlu olmayabilir.
+
+Resend gelen mesajları webhook ile uygulamaya bildirecek.
+
+Webhook üzerinde:
+
+- Kriptografik imza doğrulaması
+- Tekrarlanan olaylara karşı idempotency
+- Güvenli API erişimi
+- Hatalı isteklere karşı koruma
+- İşleme kuyruğuna alma
+- Hata kaydı
+- Tekrar deneme
+
+uygulanmalı.
+
+Webhook üzerinden gelen isteklere doğrudan güvenilmemeli.
+
+E-posta servisinin sağladığı gerçek mesaj ve ek bilgileri API aracılığıyla alınmalı.
+
+Ekler güvenli biçimde indirilmeli ve uygulamanın kendi kalıcı depolama sistemine kaydedilmeli.
+
+Harici e-posta servisinin dosyaları sonsuza kadar saklayacağı varsayılmamalı.
+
+## 7.3. E-posta metadata alanları
+
+Mümkün olduğunda:
+
+- Gönderen
+- Alıcılar
+- CC
+- E-posta konusu
+- E-posta gönderim tarihi
+- Alınma tarihi
+- E-posta gövdesi
+- Orijinal mesaj kimliği
+- Forward eden kullanıcı
+- Ek listesi
+- Kaynak servis kimliği
+
+saklanmalı.
+
+Yönlendirilmiş bir e-postanın teknik göndereni, ilk mesajın gerçek göndereninden farklı olabilir.
+
+Bu nedenle:
+
+- Gerçekte alınan e-postanın göndereni
+- Forward edilen mesajın orijinal göndereni
+
+ayrı alanlarda tutulmalı.
+
+Orijinal gönderen ve tarih güvenilir biçimde çıkarılamıyorsa kesin bilgi gibi kaydedilmemeli.
+
+Orijinal mesajın EML dosyası mevcutsa saklanabilmeli.
+
+EML dosyası elle yüklenerek de arşive alınabilmeli.
+
+## 7.4. Çoklu ekler
+
+Bir e-postada birden fazla belge olabilir.
+
+Her ek ayrı dosya olarak kaydedilmeli.
+
+Her ayrı belge kendi analizinden geçmeli.
+
+Her belge ayrı kartta gösterilmeli.
+
+Ancak belgelerin ortak kaynak e-postaları korunmalı.
+
+## 7.5. E-postaların tekrarlanması
+
+Aynı e-posta birkaç kez yönlendirilebilir.
+
+Mümkünse orijinal mesaj kimliği, kaynak bilgileri ve içerik parmak izlerinden tekrar tespiti yapılmalı.
+
+Tekrar gelen e-postalar nedeniyle gereksiz belge kopyaları oluşturulmamalı.
+
+Farklı e-postalar aynı belgeyi içeriyorsa belgeye birden fazla kaynak e-posta bağlanabilmeli.
+
+## 7.6. Doğrudan yükleme
+
+Kullanıcılar bilgisayardan veya telefondan belge yükleyebilmeli.
+
+Sürükle-bırak desteği bulunmalı.
+
+Aynı anda birden fazla dosya seçilebilmeli.
+
+Yükleme ilerlemesi gösterilmeli.
+
+İşlenen belgeler aynı arşive eklenmeli.
+
+Doğrudan yüklenen belgelerin e-posta kaynağı olmak zorunda değil.
+
+Yükleyen kullanıcının kimliği ve yükleme tarihi kaydedilmeli.
+
+## 7.7. Dosya türleri
+
+Başlangıçta desteklenecek türler:
+
+- PDF
+- DOC
+- DOCX
+- XLS
+- XLSX
+- PPT
+- PPTX
+- JPG
+- JPEG
+- PNG
+- TIFF
+- EML
+
+Her format için uygun metin çıkarma yöntemi kullanılmalı.
+
+Bir dosya türünün içeriği henüz okunamıyorsa orijinal dosya saklanmalı ve bu durum açıkça belirtilmeli.
+
+Desteklenmeyen dosya türlerinde kullanıcıya anlaşılır hata gösterilmeli.
+
+Güvenli dosya türü kontrolü ve boyut sınırları uygulanmalı.
+
+Belgeler çoğunlukla küçük PDF ve Excel dosyaları olacak. Başlangıç için dosya başına 50 MB üst sınır düşünülebilir; kesin sınır altyapı kapasitesine göre belirlenebilir.
+
+---
+
+# 8. BELGE İŞLEME SİSTEMİ
+
+Belgelerin işlenmesi kullanıcı arayüzünden bağımsız bir backend süreci olmalı.
+
+Uzun süren işlemler kullanıcıların tarayıcılarını açık tutmasını gerektirmemeli.
+
+İşleme aşamaları:
+
+1. Dosyanın alınması
+2. Dosyanın güvenli biçimde kaydedilmesi
+3. Dosya türünün doğrulanması
+4. Metin çıkarımı
+5. Gerekiyorsa OCR
+6. Belge numarası tespiti
+7. Belge tarihi ve diğer metadata çıkarımı
+8. İLGİ bölümünün ayrıştırılması
+9. Başlık, açıklama ve anahtar kelimelerin üretilmesi
+10. İlişkili belgelerin eşleştirilmesi
+11. Arama indeksinin güncellenmesi
+12. Semantik arama için embedding üretilmesi
+13. İşlemin tamamlanması
+
+İşlemler gerektiğinde tekrar başlatılabilmeli.
+
+İşlem yarıda kesilirse veri kaybı olmamalı.
+
+## 8.1. İşlem durumları
+
+Kullanıcı en azından şu durumları görebilmeli:
+
+- Alındı
+- Bekliyor
+- İşleniyor
+- OCR yapılıyor
+- AI analizi yapılıyor
+- İlişkiler eşleştiriliyor
+- İndeksleniyor
+- Tamamlandı
+- İnceleme gerekiyor
+- Hata
+
+Hata durumunda orijinal dosya korunmalı.
+
+Başarısız işlemlerde yeniden deneme mekanizması bulunmalı.
+
+Tekrarlanan hatalar sonsuz döngüye girmemeli.
+
+## 8.2. İşlem geçmişi
+
+Uygulamada işlem geçmişi sayfası bulunmalı.
+
+Bu sayfada:
+
+- Son gelen e-postalar
+- Yeni yüklenen dosyalar
+- İşlem durumları
+- Başarılı işlemler
+- Hatalı işlemler
+- Mükerrer belgeler
+- Manuel inceleme gereken kayıtlar
+
+gösterilmeli.
+
+Yönetici olmayan kullanıcılar da günlük işlem durumlarını inceleyebilmeli.
+
+---
+
+# 9. OCR VE METİN ÇIKARIMI
+
+Arşivde eski tarihlerde kamerayla veya tarayıcıyla oluşturulmuş belgeler bulunabilir.
+
+Bu belgelerin bazıları yalnızca görüntülerden oluşur.
+
+Bu nedenle OCR gereklidir.
+
+Ancak yeni belgelerin çoğu doğrudan bilgisayarda hazırlanmış olacaktır.
+
+Dolayısıyla her PDF'ye gereksiz yere OCR uygulanmamalı.
+
+Önce mevcut metin katmanı kontrol edilmeli.
+
+Yeterli ve güvenilir metin bulunuyorsa doğrudan metin çıkarımı yapılmalı.
+
+Metin katmanı yoksa veya büyük ölçüde okunamıyorsa OCR kullanılmalı.
+
+OCR özellikle Türkçe karakterleri desteklemeli.
+
+Teknik belge numaralarını, tarihleri, kurum isimlerini ve sayısal bilgileri mümkün olduğunca doğru çıkarmalı.
+
+OCR sonucunda belirsiz karakterler kritik belge numaralarında otomatik olarak uydurulmamalı.
+
+Belge numarasından emin olunamıyorsa kayıt manuel incelemeye bırakılmalı.
+
+OCR metni orijinal dosyanın yerine geçmez.
+
+Orijinal dosya her zaman korunur.
+
+OCR işlemlerinin maliyet ve işlem süresi mümkün olduğunca düşük tutulmalı.
+
+---
+
+# 10. BELGE NUMARALARI VE MÜKERRER KONTROLÜ
+
+DHMİ belgelerinin önemli bir özelliği, benzersiz belge numaraları içermeleridir.
+
+Belge numarası, sistemde belge kimliğini belirlemek için kullanılan en önemli alanlardan biri olacak.
+
+Bununla birlikte belge numarasının yanlış çıkarılmış, yeniden kullanılmış veya revize edilmiş olabileceği göz önünde bulundurulmalı.
+
+## 10.1. Belge numarasının çıkarılması
+
+Öncelikle kural tabanlı yöntemler kullanılmalı:
+
+- Düzenli ifadeler
+- Metin içi konum analizi
+- Resmî yazışma başlıkları
+- Sayı / No alanları
+- Tarih ve belge kodu örüntüleri
+
+Gerektiğinde AI analizi kullanılabilir.
+
+Belge içindeki bütün rastgele sayılar belge numarası olarak kabul edilmemeli.
+
+## 10.2. Normalizasyon
+
+Belge numarası hem orijinal hem de normalize edilmiş biçimde saklanmalı.
+
+Arama ve eşleştirme için uygun olduğu ölçüde:
+
+- Boşluklar
+- Harf büyüklükleri
+- Tire çeşitleri
+- Eğik çizgi çeşitleri
+- Biçimlendirme kaynaklı farklar
+
+normalize edilebilir.
+
+Ancak normalizasyon farklı gerçek belge numaralarını yanlışlıkla aynı numaraya dönüştürmemeli.
+
+## 10.3. Mükerrer kuralları
+
+**Aynı belge numarası ve aynı içerik:**
+
+Mükerrer belge olarak değerlendir.
+
+**Aynı belge numarası fakat farklı içerik:**
+
+Otomatik silme veya birleştirme yapma.
+
+Olası revizyon ya da çakışma olarak işaretle.
+
+**Farklı belge numarası:**
+
+Genellikle farklı belge kabul et.
+
+**Belge numarası bulunamıyorsa:**
+
+Dosya hash'i ve diğer metadata üzerinden kontrollü karşılaştırma yap.
+
+SHA-256 gibi güvenilir hash kullan.
+
+## 10.4. Birden fazla kaynak
+
+Tek bir belge farklı e-postalarda bulunabilir.
+
+Bu durumda yeni belge kartı oluşturmak yerine mevcut belgeyle yeni kaynak e-posta ilişkilendirilebilir.
+
+Ancak aynı numaraya sahip farklı dosyalar otomatik olarak birleştirilmemeli.
+
+Her kaynak dosyanın kimliği ve hash değeri korunmalı.
+
+---
+
+# 11. YAPAY ZEKÂ İLE BELGE ANALİZİ
+
+Sistem, belge eklendiğinde gerekli içerik analizini otomatik yapmalı.
+
+Çıkarılacak bilgiler:
+
+- Anlamlı ve ayırt edici başlık
+- Kısa açıklama
+- Gerekirse ayrıntılı açıklama
+- Anahtar kelimeler
+- Belge numarası
+- Belge tarihi
+- İlgili kurum ve kişiler
+- Havalimanı
+- Şehir veya lokasyon
+- Proje
+- Belgenin konusu ve amacı
+- Belge türü
+- İLGİ referansları
+- Diğer önemli teknik bilgiler
+
+AI'dan yapılandırılmış sonuçlar alınmalı.
+
+Mümkün olduğunda JSON Schema veya benzeri biçim doğrulaması kullanılmalı.
+
+AI'nın döndürdüğü sonuçlar doğrudan güvenilir kabul edilmemeli.
+
+Zorunlu alanlar doğrulanmalı.
+
+Belge numarası ve tarih gibi kritik alanlarda kaynak metinle tutarlılık kontrolü yapılmalı.
+
+## 11.1. Açıklamaların kalitesi
+
+Açıklamalar çok genel olmamalı.
+
+Belgenin özünü, amacını ve ayırt edici unsurlarını içermeli.
+
+Gereksiz teknik ayrıntılarla kartlar doldurulmamalı.
+
+Ancak farklı belgeleri birbirinden ayırt etmeyi sağlayan önemli bilgiler korunmalı.
+
+Havalimanı, proje, teknik konu ve yazışma amacı mümkün olduğunca belirtilmeli.
+
+## 11.2. Kaynak bilgisi
+
+AI tarafından çıkarılan kritik metadata için mümkün olduğunda kaynak metin, sayfa numarası veya bölüm bilgisi saklanmalı.
+
+Böylece bilgiler sonradan doğrulanabilmeli.
+
+Çıkarımın belirsiz olduğu durumlar kayıt altına alınmalı.
+
+Belgenin içinde geçmeyen bilgiler kesin metadata olarak üretilmemeli.
+
+## 11.3. Manuel düzeltmeler
+
+Kullanıcı AI'nın ürettiği başlığı, açıklamayı veya metadata alanlarını düzeltebilmeli.
+
+Bu düzeltmeler korunmalı.
+
+Tekrar analiz yapıldığında kullanıcı değişiklikleri otomatik olarak kaybolmamalı.
+
+---
+
+# 12. GELİŞMİŞ ARAMA MOTORU
+
+Uygulamanın temel kullanım amacı doğru belgeyi olabildiğince hızlı bulmaktır.
+
+Arama sistemi iki yaklaşımı birleştirmeli:
+
+**1. Klasik tam metin arama**
+
+**2. Semantik arama**
+
+## 12.1. Tam metin arama
+
+Belgelerin çıkarılmış metinleri indekslenmeli.
+
+Belge başlıkları, açıklamalar, belge numaraları, kurumlar ve diğer metadata alanları da aranmalı.
+
+Türkçe metinlerde uygun normalizasyon ve metin arama stratejileri kullanılmalı.
+
+Tam eşleşen belge numaraları güçlü biçimde öne çıkarılmalı.
+
+## 12.2. Semantik arama
+
+Kullanıcı her zaman belgedeki ifadelerin aynısını kullanmayabilir.
+
+Örneğin:
+
+"Engel sınırlama yüzeyleri"
+
+sorgusu, ilgili belgelerde "mania" terimi kullanılmışsa onları da bulabilmeli.
+
+Bunun için anlam temelli arama uygulanmalı.
+
+Türkçe teknik belgeler için uygun çok dilli embedding modeli seçilmeli.
+
+Belge metinleri gerektiğinde anlamlı parçalara ayrılmalı.
+
+Parça ve belge seviyesindeki sonuçlar birlikte kullanılmalı.
+
+## 12.3. Hibrit sıralama
+
+Anahtar kelime araması ve semantik sonuçlar birleştirilmeli.
+
+Tam belge numarası eşleşmelerinin semantik benzerlik nedeniyle geriye düşmesi engellenmeli.
+
+Başlık, metadata ve belge içeriklerinin farklı ağırlıkları olabilir.
+
+Aynı belgenin birçok metin parçası eşleştiğinde sonuç listesinde gereksiz yinelenen kartlar oluşturulmamalı.
+
+## 12.4. Performans
+
+Her aramada bütün belgeler yeniden AI'a gönderilmemeli.
+
+Arama indeksi ve embedding verileri önceden hazırlanmış olmalı.
+
+Yeni belge eklendiğinde ilgili indeks güncellenmeli.
+
+Belge değişmediği sürece gereksiz embedding üretilmemeli.
+
+Belge metadata bilgileri düzenlendiğinde ilgili indeks alanları güncellenmeli.
+
+Arşiv büyüdükçe kullanılabilir performans korunmalı.
+
+---
+
+# 13. AI RESEARCH
+
+Ana arama sisteminden bağımsız bir **AI Research** bölümü bulunacak.
+
+Ana aramanın amacı hızlıca ilgili belgeyi bulmaktır.
+
+AI Research bölümünün amacı ise arşivdeki belgeler arasında kapsamlı araştırma yapabilmektir.
+
+## 13.1. Örnek kullanıcı soruları
+
+"Esenboğa Havalimanı'ndaki mania konusuyla ilgili şimdiye kadar hangi yazışmaları yapmışım?"
+
+"Apron genişletmesiyle ilgili gönderdiğimiz son teknik görüş hangisi?"
+
+"2023 yılında başlayan ve 2025 yılında sonuçlanan yazışmaları bul."
+
+"Bu konuyla ilgili bütün belgeleri kronolojik sıraya koy."
+
+"Aynı konuda gönderilmiş iki teknik görüş arasındaki farklılıklar neler?"
+
+"Bu belgeye daha sonra hangi yazışmalarda atıfta bulunulmuş?"
+
+"Belirli bir havalimanıyla ilgili bütün teknik değerlendirmeleri listele."
+
+"Bu projenin geçmişten bugüne gelişimini özetle."
+
+"Bu konuda daha önce hangi kurumlara hangi görüşler gönderilmiş?"
+
+## 13.2. RAG mimarisi
+
+Retrieval-Augmented Generation yaklaşımı kullanılmalı.
+
+İşleyiş:
+
+1. Kullanıcının sorusunu analiz et.
+2. İlgili belge ve metadata alanlarını belirle.
+3. Gerekirse tarih, kurum ve diğer filtreleri uygula.
+4. Tam metin arama ve semantik arama ile ilgili belgeleri bul.
+5. Belgeler arasındaki gerçek İLGİ bağlantılarını kullan.
+6. İlgili metin parçalarını modele gönder.
+7. Kaynaklara dayanan yanıt üret.
+8. Kaynakları kullanıcıya göster.
+
+Bütün arşiv her sorguda doğrudan modele gönderilmemeli.
+
+## 13.3. Kaynak gösterme
+
+AI Research yanıtları mümkün olduğunca kaynaklı olmalı.
+
+Yanıtta kaynak olarak kullanılan belgeler gösterilmeli.
+
+Her kaynak bağlantısı:
+
+- Belge başlığını
+- Belge numarasını
+- Belge tarihini
+- İlgili sayfa veya bölümü, mümkünse
+- İlgili metin bölümünü
+
+içermeli.
+
+Kullanıcı kaynak bağlantısına tıklayınca belge detay paneline gidebilmeli.
+
+Yanıtın içinde kaynaklar anlamlı konumlarda kullanılmalı.
+
+Gerçek olmayan belge numaraları, tarihler veya kaynak referansları üretilmemeli.
+
+Bulunamayan bilgiler açıkça belirtilmeli.
+
+Belge içinde bulunmayan çıkarımlar kesin bilgi olarak sunulmamalı.
+
+## 13.4. Karşılaştırma ve kronoloji
+
+AI Research şunları desteklemeli:
+
+- Aynı konudaki belgeleri karşılaştırma
+- İki teknik görüş arasındaki farkları bulma
+- Tarihsel gelişmeleri özetleme
+- Yazışma kronolojisi oluşturma
+- Projenin geçmişini araştırma
+- Belge referans zincirlerini takip etme
+- Belirli bir konuya ilişkin ilgili kayıtları listeleme
+
+Kronolojik sıralama gerektiğinde belge tarihleri kullanılmalı.
+
+Tarih bilgisi eksik veya belirsizse bu durum belirtilmeli.
+
+İLGİ ilişkileriyle çıkarılan kronoloji ve yalnızca tarih/konu benzerliğine dayalı kronoloji birbirinden ayrılmalı.
+
+## 13.5. AI Research arayüzü
+
+Sade bir soru-cevap arayüzü bulunmalı.
+
+Kullanıcı doğal Türkçeyle soru sorabilmeli.
+
+Yanıtın altında veya yanında kullanılan belgeler gösterilmeli.
+
+Kullanıcı kaynak belgelere kolayca geçebilmeli.
+
+Uzun araştırmalarda:
+
+- Başlıklar
+- Kronolojik sıralamalar
+- Karşılaştırma tabloları
+- Kaynak bağlantıları
+
+uygun biçimde kullanılabilmeli.
+
+## 13.6. Sınırlar
+
+AI Research yalnızca erişim izni olan arşiv verilerini kullanmalı.
+
+Doküman içindeki talimatlar modele yöneltilmiş yeni sistem komutları olarak yorumlanmamalı.
+
+Belgelerdeki metinler güvenilmeyen veri olarak değerlendirilmeli.
+
+AI Research belge silme, kullanıcı yönetimi veya kritik ayar değiştirme işlemleri gerçekleştirememeli.
+
+---
+
+# 14. ABACUS.AI ROUTELLM API ENTEGRASYONU
+
+Uygulamanın AI özellikleri için **Abacus.AI RouteLLM API** kullanılacak.
+
+Doğrudan OpenAI veya Gemini API anahtarlarına bağımlı bir sistem istenmiyor.
+
+RouteLLM'nin OpenAI uyumlu API arabirimi kullanılabilir.
+
+API endpoint'i ve model seçimi yapılandırılabilir olmalı.
+
+**Önemli ayrım:** Abacus, uygulamayı geliştirmek veya yayınlamak için zorunlu bir platform değildir. Yalnızca uygulamanın AI işlemlerinde kullanılacak RouteLLM API hizmetini sağlamaktadır.
+
+Geliştirme sürecinde Codex, Antigravity veya başka AI coding agent'larının kullanılması bu gereksinimi değiştirmez.
+
+API anahtarı yalnızca güvenli sunucu ortamında saklanmalı.
+
+Önerilen ortam değişkeni:
+
+`ROUTELLM_API_KEY`
+
+API anahtarı:
+
+- Frontend koduna konulmamalı.
+- Tarayıcıya gönderilmemeli.
+- JavaScript bundle içine eklenmemeli.
+- Loglara yazılmamalı.
+- Kullanıcıların görebileceği veritabanı tablolarında düz metin olarak saklanmamalı.
+- Hata mesajlarında gösterilmemeli.
+
+## 14.1. AI görevlerinin ayrılması
+
+Farklı işlemler farklı maliyet ve kapasite gerektirir.
+
+En azından şu görevler ayrılmalı:
+
+- Belge başlığı ve açıklaması
+- Metadata çıkarımı
+- Belirsiz belge numaralarının değerlendirilmesi
+- İLGİ ayrıştırma için gerektiğinde AI desteği
+- AI Research
+- Karmaşık, çok belgeli araştırmalar
+
+Her görev için model seçimi merkezi olarak yapılandırılabilir olmalı.
+
+Varsayılan olarak ekonomik ve yeterli modeller tercih edilmeli.
+
+Karmaşık araştırmalarda gerektiğinde daha güçlü model kullanılabilmeli.
+
+RouteLLM'nin otomatik model yönlendirme özelliği desteklenmeli.
+
+Model kimliklerinin zamanla değişebileceği göz önünde bulundurulmalı.
+
+## 14.2. Embedding
+
+RouteLLM API'nin metin embedding üretimi için gerekli uç noktayı sağlayıp sağlamadığı doğrulanmalı.
+
+Desteklenmeyen bir API özelliği varmış gibi kullanılmamalı.
+
+Doğrudan desteklenmiyorsa Türkçe teknik metinlere uygun çok dilli, yerel bir embedding modeli veya onaylanmış alternatif bir yöntem kullanılmalı.
+
+Embedding üretimi diğer AI işlemlerinden bağımsız bir servis modülü olmalı.
+
+Kaynak belgelerin gizlilik gereksinimleri korunmalı.
+
+## 14.3. API maliyetleri
+
+Yapay zekâ çağrılarının kullanım bilgileri kayıt altına alınmalı.
+
+Mümkün olduğunda:
+
+- Kullanılan model
+- İşlem türü
+- Input token sayısı
+- Output token sayısı
+- Toplam token
+- İşlem zamanı
+- İşlem durumu
+- Tahmini maliyet veya kredi tüketimi
+
+saklanmalı.
+
+Yöneticiler için bir **AI Kullanım ve Maliyet** bölümü bulunmalı.
+
+Toplam aylık tüketim, işlem türlerine ve modellere göre kullanım gösterilmeli.
+
+Mümkünse aylık bütçe eşiği ve uyarı sistemi oluşturulmalı.
+
+API'nin vermediği kesin maliyet bilgileri uydurulmamalı.
+
+Tahmini maliyetler açıkça tahmini olarak gösterilmeli.
+
+API geçici olarak kullanılamıyorsa normal arşiv görüntüleme, dosya indirme ve klasik arama işlevleri çalışmaya devam etmeli.
+
+---
+
+# 15. VERİTABANI VE DOSYA DEPOLAMA
+
+Kalıcı, güvenilir ve ilişkisel bir veritabanı kullanılmalı.
+
+**Tercih edilen veritabanı PostgreSQL'dir.**
+
+Belge ilişkileri, tam metin arama ve gerektiğinde pgvector kullanımı açısından PostgreSQL uygun bir seçenektir.
+
+Bununla birlikte nihai altyapı seçimi teknik mimari değerlendirmesiyle kesinleştirilecektir.
+
+Uygulama belirli bir AI geliştirme platformunun yerleşik veritabanına bağımlı olmamalıdır.
+
+Belgelerin orijinal dosyaları ile metadata kayıtları ayrı fakat ilişkili biçimde saklanmalı.
+
+## 15.1. Temel veri varlıkları
+
+En azından aşağıdaki mantıksal veri yapılarına ihtiyaç var.
+
+### Users
+
+- Kullanıcı ID
+- Kullanıcı adı
+- Görünen ad
+- Rol
+- Hesap durumu
+- TOTP kayıt bilgileri
+- Oluşturulma tarihi
+- Son giriş
+- Kurtarma bilgileri
+
+### Emails
+
+- E-posta ID
+- Kaynak servis
+- Kaynak servis mesaj ID
+- Orijinal mesaj ID, varsa
+- Gerçek alınan gönderen
+- Orijinal gönderen, belirlenebiliyorsa
+- Alıcılar
+- Konu
+- Tarihler
+- Gövde
+- İşlem durumu
+- Kaynak dosya referansı
+
+### Documents
+
+- Belge ID
+- Orijinal dosya adı
+- Dosya uzantısı
+- Dosya boyutu
+- Hash
+- Depolama konumu
+- Belge numarası
+- Normalize belge numarası
+- Belge tarihi
+- Başlık
+- Açıklama
+- Uzun açıklama
+- Gönderen kurum
+- Alıcı
+- İlgili birim
+- Havalimanı
+- Proje
+- Sayfa sayısı
+- İşlem durumu
+- Oluşturulma tarihi
+- Güncellenme tarihi
+- Silinme/arşivlenme durumu
+
+### DocumentSources
+
+Belgeler ile kaynak e-postalar veya doğrudan yüklemeler arasındaki ilişkiler.
+
+Bir belgenin birden fazla kaynağı olabilir.
+
+### DocumentText
+
+- Çıkarılan metin
+- OCR durumu
+- Metin çıkarma yöntemi
+- Sayfa veya bölüm bilgileri
+- İşlem sürümü
+
+### DocumentChunks
+
+- Belge ID
+- Parça ID
+- Metin
+- Sıra
+- Sayfa bilgisi
+- Arama indeks bilgisi
+- Embedding referansı
+
+### Keywords
+
+Belge anahtar kelimeleri ve kaynakları.
+
+### DocumentReferences
+
+- Kaynak belge
+- Hedef belge, çözümlenmişse
+- Referans belge numarası
+- Referans tarihi
+- Orijinal İLGİ metni
+- Referans türü
+- Eşleşme durumu
+- Doğrulama durumu
+
+### ProcessingJobs
+
+- İş ID
+- İş türü
+- İş durumu
+- Başlangıç zamanı
+- Bitiş zamanı
+- Deneme sayısı
+- Hata bilgisi
+
+### AILogs
+
+- İşlem türü
+- Model
+- Token kullanımı
+- Tahmini maliyet
+- Başarı/hata durumu
+- Süre
+
+### AuditLogs
+
+- Kullanıcı
+- İşlem türü
+- Hedef kayıt
+- Tarih
+- İlgili değişiklikler
+- Güvenlik olayları
+
+Bu yapılar birebir tablo isimleri olarak zorunlu değildir.
+
+Daha iyi normalize edilmiş bir ilişkisel tasarım kullanılabilir.
+
+## 15.2. Kalıcı dosya saklama
+
+Orijinal dosyalar uygulamanın geçici dosya sisteminde tutulmamalı.
+
+Kalıcı ve özel erişimli dosya depolama kullanılmalı.
+
+Tercihen S3 uyumlu nesne depolama veya aynı güvenlik ve kalıcılık koşullarını karşılayan başka bir çözüm seçilmeli.
+
+Depolama çözümünün:
+
+- Gerçekten kalıcı olduğu
+- Yayınlama sırasında silinmediği
+- Uygulama güncellemelerinde korunduğu
+- Yedeklenebildiği
+- Yetkisiz erişime kapalı olduğu
+
+doğrulanmalı.
+
+Belgeler doğrudan herkese açık dosya bağlantılarından erişilebilir olmamalı.
+
+Dosya indirme bağlantıları yalnızca yetkilendirme sonrasında oluşturulmalı.
+
+## 15.3. Veri bütünlüğü
+
+Veritabanındaki kayıtlarla depolanan dosyalar arasında tutarlılık sağlanmalı.
+
+Dosya yükleme başarısız olduğunda yarım kayıtlar güvenli biçimde yönetilmeli.
+
+Veritabanı ve dosya depolama işlemleri arasında oluşabilecek hatalar için telafi mekanizmaları bulunmalı.
+
+Orijinal dosyalar AI analizi sırasında değiştirilmemeli.
+
+---
+
+# 16. GÜVENLİK VE GİZLİLİK
+
+Arşivde resmî yazışmalar bulunabileceğinden güvenlik kritik öneme sahiptir.
+
+Uygulamaya erişim yalnızca yetkili kullanıcılarla sınırlandırılacak.
+
+Uygulama internette bir URL üzerinden erişilebilir olsa bile belgeler herkese açık olmayacak.
+
+## 16.1. Erişim güvenliği
+
+Giriş yapılmadan:
+
+- Belge listesi
+- Belge içeriği
+- Dosya bağlantıları
+- Arama sonuçları
+- Metadata
+- Kullanıcı bilgileri
+- AI Research sonuçları
+
+görüntülenememeli.
+
+Doğrudan API isteği gönderen yetkisiz kişiler de engellenmeli.
+
+## 16.2. Temel kontroller
+
+- HTTPS
+- Güvenli oturum yönetimi
+- Sunucu tarafında yetkilendirme
+- Login rate limiting
+- TOTP yeniden kullanım kontrolü
+- CSRF koruması
+- XSS koruması
+- SQL injection koruması
+- Güvenli dosya yükleme
+- Dosya türü ve boyut doğrulaması
+- Webhook imza doğrulaması
+- Gizli anahtarların güvenli saklanması
+- Denetim kayıtları
+- Güvenli hata mesajları
+
+uygulanmalı.
+
+Yüklenen belgeler ve e-postalar güvenilmeyen içerik olarak ele alınmalı.
+
+Zararlı veya şüpheli ekler uygun güvenlik kontrollerinden geçirilmeli.
+
+## 16.3. Harici hizmetler
+
+Belgelerin içeriği yalnızca gerekli olduğunda AI API'lerine gönderilmeli.
+
+Mümkünse yalnızca ilgili metin bölümleri aktarılmalı.
+
+Harici AI sağlayıcılarının veri saklama ve gizlilik politikaları dikkate alınmalı.
+
+Kurumsal belge paylaşımına ilişkin izinler doğrulanmadan üretim verileriyle dış hizmetlerde işlem başlatılmamalı.
+
+Gerçek DHMİ belgeleri test ve geliştirme ortamlarına doğrudan yüklenmemeli.
+
+Testler için açıkça kurgusal içerikli belgeler kullanılmalı.
+
+## 16.4. Yedekleme
+
+Belgeler ve veritabanı düzenli olarak yedeklenmeli.
+
+Yedekler yalnızca aynı uygulama ortamındaki tek bir dosyadan ibaret olmamalı.
+
+Veritabanı ile orijinal dosyalar birlikte kurtarılabilecek biçimde yedeklenmeli.
+
+Arama indeksi yeniden üretilebilir olabilir; kaynak belgelerin ve kritik metadata bilgilerinin kaybı kabul edilemez.
+
+Yedeklerden geri yükleme prosedürü hazırlanmalı ve test edilmeli.
+
+## 16.5. Silme
+
+Normal silme işlemi geri alınabilir olmalı.
+
+Kalıcı silme yalnızca yöneticiler tarafından yapılmalı.
+
+Kalıcı silme öncesinde açık onay istenmeli.
+
+Silme işlemleri denetim kaydına yazılmalı.
+
+Belgeye ait kaynak ilişkileri ve İLGİ referansları tutarlı biçimde yönetilmeli.
+
+---
+
+# 17. PERFORMANS VE SÜRDÜRÜLEBİLİRLİK
+
+Sistem arşivdeki belge sayısı arttıkça kullanılabilir kalmalı.
+
+Aşağıdaki prensipler uygulanmalı:
+
+- Sayfalama veya kontrollü sonsuz kaydırma
+- Veritabanı indeksleri
+- Hızlı belge numarası sorguları
+- Önceden oluşturulmuş tam metin indeksi
+- Önceden oluşturulmuş embedding verileri
+- Ağır işlemler için arka plan işleme
+- İşlem tekrarlarında idempotency
+- API zaman aşımı ve yeniden deneme
+- Hatalı işlemleri izleme
+- Gereksiz AI çağrılarını engelleme
+- Arama sonuçlarını uygun biçimde önbelleğe alma
+
+Geliştirme ortamına bağımlı geçici yöntemler kullanılmamalı.
+
+Uygulama yeniden başlatıldığında veya yeniden yayınlandığında veriler korunmalı.
+
+Uygulamanın kaynak kodu, Git üzerinden yönetilebilmeli ve farklı geliştirme ajanları tarafından sürdürülebilir olmalı.
+
+Teknik bileşenler mümkün olduğunca modüler tasarlanmalı.
+
+Gerektiğinde veritabanı, depolama, OCR veya AI servisleri uygulamanın tamamını yeniden yazmadan değiştirilebilmeli.
+
+---
+
+# 18. YÖNETİM BÖLÜMÜ
+
+Yalnızca ADMIN rolündeki kişiler erişebilmeli.
+
+## Kullanıcı Yönetimi
+
+- Kullanıcıları listeleme
+- Kullanıcı ekleme
+- Rol değiştirme
+- Erişimi iptal etme
+- TOTP sıfırlama
+- Hesap durumlarını görme
+
+## Sistem Durumu
+
+- Toplam belge sayısı
+- Toplam e-posta sayısı
+- İşlem bekleyen dosyalar
+- Hatalı işlemler
+- Son başarılı işlemler
+- Arama indeksi durumu
+- İLGİ eşleşmelerinin durumu
+
+## Entegrasyonlar
+
+- RouteLLM bağlantı durumu
+- E-posta alma bağlantı durumu
+- Dosya depolama bağlantı durumu
+- OCR ve embedding bileşenlerinin durumu
+
+Hassas anahtarların kendisi gösterilmemeli.
+
+## AI Kullanımı
+
+- Aylık kullanım
+- İşlem türlerine göre tüketim
+- Model bazlı tüketim
+- Tahmini maliyetler
+- Bütçe uyarıları
+
+## Güvenlik
+
+- Giriş denemeleri
+- Kullanıcı değişiklikleri
+- Kritik işlemler
+- Dosya silme
+- Hesap kurtarma
+- Sistem hata kayıtları
+
+## Yedekleme
+
+- Yedekleme durumu
+- Son başarılı yedek
+- Geri yükleme prosedürü
+- İlgili güvenlik uyarıları
+
+---
+
+# 19. GÖRSEL TASARIM VE KULLANILABİLİRLİK
+
+Modern ve sade bir tasarım dili kullanılmalı.
+
+Önerilen yaklaşım:
+
+- Açık renkli, sakin arka plan
+- Okunabilir tipografi
+- Belge kartlarında düzenli bilgi hiyerarşisi
+- Belirgin arama alanı
+- Hafif kart sınırları
+- Tutarlı boşluklar
+- Teknik bilgiler için uygun etiketler
+- Rahat okunabilir tarih ve belge numaraları
+- Belirgin indirme düğmeleri
+- Kullanışlı sağ detay paneli
+- Mobil uyumluluk
+
+Gereksiz animasyon, karmaşık dashboard ve dekoratif grafiklerden kaçınılmalı.
+
+Uygulama bir belge arşivi olduğu için görsel odak belgeler ve arama olmalı.
+
+Ana sayfa ilk açıldığında kullanıcı arşivi hemen görmeli.
+
+Kullanıcıların belge bulmak için çok fazla menü gezmesi gerekmemeli.
+
+Belge indirme, detay görüntüleme ve ilgili belgelere geçiş gibi işlemler mümkün olduğunca az tıklamayla gerçekleştirilmeli.
+
+---
+
+# 20. KABUL TESTLERİ
+
+Projenin tamamlandığı kabul edilmeden önce aşağıdaki senaryolar gerçek uygulama üzerinde test edilmeli.
+
+## 20.1. Kullanıcı ve güvenlik
+
+1. İlk yönetici güvenli biçimde oluşturulabiliyor mu?
+2. Yönetici yeni kullanıcı ekleyebiliyor mu?
+3. İki farklı kişi kendi Authenticator uygulamalarıyla giriş yapabiliyor mu?
+4. Bir kullanıcının kodu başka kullanıcı hesabında reddediliyor mu?
+5. Kullanıcı hesabı devre dışı bırakılınca giriş engelleniyor mu?
+6. Üye rolündeki kullanıcı kritik yönetici işlemlerini gerçekleştiremiyor mu?
+7. Giriş yapmamış kullanıcı doğrudan belge URL'sine erişemiyor mu?
+
+## 20.2. Belge yükleme
+
+8. PDF dosyası yüklenebiliyor mu?
+9. Word ve Excel dosyaları yüklenebiliyor mu?
+10. Birden fazla dosya aynı anda yüklenebiliyor mu?
+11. Dosyalar uygulama yeniden yayınlandıktan sonra korunuyor mu?
+12. Orijinal dosyalar değiştirilmeden indirilebiliyor mu?
+13. Aynı belge tekrar yüklenince mükerrer kontrolü çalışıyor mu?
+14. Aynı belge numarasına sahip farklı dosya yanlışlıkla silinmiyor mu?
+
+## 20.3. Belge analizi
+
+15. Belge numarası doğru çıkarılıyor mu?
+16. Belge tarihi doğru çıkarılıyor mu?
+17. AI anlamlı bir başlık ve kısa açıklama oluşturuyor mu?
+18. Taranmış belgeden OCR ile metin çıkarılıyor mu?
+19. Kullanıcı tarafından düzeltilmiş metadata korunuyor mu?
+
+## 20.4. İLGİ ilişkileri
+
+20. A belgesi B belgesine İLGİ referansı veriyorsa A'dan B'ye geçilebiliyor mu?
+21. B belgesinde A'nın kendisine atıfta bulunduğu gösteriliyor mu?
+22. Hedef belge arşivde yoksa referans korunuyor mu?
+23. Hedef belge sonradan eklendiğinde otomatik eşleşme oluşuyor mu?
+24. AI benzerliği ile gerçek İLGİ referansı birbirine karıştırılmıyor mu?
+
+## 20.5. Arama
+
+25. Belge numarasıyla tam arama çalışıyor mu?
+26. Belge metnindeki teknik terimler aranabiliyor mu?
+27. Tarih ve kurum filtreleri doğru çalışıyor mu?
+28. Anahtar kelime etiketleri arama kriteri ekliyor mu?
+29. Semantik olarak ilişkili belgeler bulunabiliyor mu?
+30. Sonuçlar alakalılığa göre sıralanabiliyor mu?
+
+## 20.6. E-posta
+
+31. Outlook'tan yönlendirilen test e-postası sisteme ulaşıyor mu?
+32. Bir e-postadaki üç farklı ek ayrı belge kayıtlarına dönüştürülüyor mu?
+33. Kaynak e-posta bilgileri korunuyor mu?
+34. Aynı e-postanın yeniden alınması gereksiz belge çoğalmasına yol açmıyor mu?
+35. Başarısız işlenen ek daha sonra yeniden işlenebiliyor mu?
+
+## 20.7. AI Research
+
+36. AI Research doğru belgeleri bulabiliyor mu?
+37. Yanıtlarda gerçek kaynak belgeler gösteriliyor mu?
+38. Kaynak bağlantısına tıklanınca ilgili belge açılıyor mu?
+39. Belgelerde bulunmayan bilgiler kesin bilgi gibi üretilmiyor mu?
+40. Kronolojik belge araştırmaları doğru tarihlerle hazırlanıyor mu?
+
+## 20.8. Diğer
+
+41. Mobil tarayıcıda temel işlemler çalışıyor mu?
+42. Sistem yeniden başlatıldığında veri kaybı yaşanmıyor mu?
+43. Hatalı AI API bağlantısı normal arşiv kullanımını durdurmuyor mu?
+44. Yedekten geri yükleme doğrulanabiliyor mu?
+45. Gerçek veritabanı ve gerçek depolama kullanıldığı doğrulanıyor mu?
+
+Kabul testleri yalnızca teorik olarak yanıtlanmamalı.
+
+Mümkün olan senaryolar otomatik testlerle, diğerleri gerçek arayüz ve API üzerinden doğrulanmalı.
+
+Tamamlanamayan veya test edilemeyen işlevler açıkça belirtilmeli.
+
+---
+
+# 21. ÖNEMLİ SINIRLAMALAR VE PROJE KURALLARI
+
+Aşağıdaki hatalar yapılmamalı:
+
+- Sadece çalışan gibi görünen demo oluşturma.
+- Sahte belge arama sonuçları üretme.
+- Gerçek veritabanı yerine sabit JSON verisi kullanma.
+- Orijinal belgeleri yalnızca geçici bellekte saklama.
+- Her dosyada gereksiz OCR çalıştırma.
+- Her aramada bütün arşivi AI modeline gönderme.
+- İLGİ referanslarını semantik benzerlikle karıştırma.
+- Kaynak belgesi bulunmayan AI iddiaları üretme.
+- Kullanıcıların API anahtarına erişmesini sağlama.
+- Herkese açık belge URL'leri oluşturma.
+- Kaybolan belgeleri sessizce görmezden gelme.
+- Başarısız API isteklerini başarılı gibi gösterme.
+- Bir doküman numarasını yanlış normalize edip başka bir belgeyle birleştirme.
+- Belgenin gerçek metnini AI özetiyle değiştirme.
+- Kullanıcı düzeltmelerini yeniden analiz sırasında silme.
+- Kullanıcının bütün arşivini yeniden yüklemesini gerektiren güncelleme sistemi oluşturma.
+- AI geliştirme araçlarına özel, taşınamayan bir uygulama mimarisi oluşturma.
+- Ortak proje gereksinimlerini görmezden gelerek farklı ajanların çelişkili sistemler geliştirmesine izin verme.
+
+## Geliştirme ortamı hakkında
+
+Uygulamanın geliştirilmesinde Cezar.run, Codex ve Antigravity kullanılacaktır.
+
+Bu araçlar geliştirme sürecinin parçalarıdır; uygulamanın üretim ortamında çalışması için gerekli bağımlılıklar değildir.
+
+Uygulama, geliştirildiği AI ortamından bağımsız olarak çalıştırılabilir ve yayınlanabilir olmalıdır.
+
+Teknik mimari, geliştirme görevleri, Git dalları, test süreçleri ve iş bölümü ayrı proje dokümanlarında yönetilecektir.
+
+Bu belge yalnızca ürünün ve sistemin karşılaması gereken gereksinimleri tanımlar.
+
+**Nihai hedef; güvenilir, uzun ömürlü, güvenli ve günlük kullanımda pratik bir belge arşividir.**

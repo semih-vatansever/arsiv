@@ -1,0 +1,6 @@
+{
+  "name": "DHMİ Akıllı Doküman Arşivi",
+  "description": "DHMİ resmî yazışmalarının ve teknik belgelerin güvenli arşivlenmesi, İLGİ ilişkilendirmesi, hibrit aranması ve RouteLLM tabanlı AI Research analizi için kurumsal web uygulaması.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
